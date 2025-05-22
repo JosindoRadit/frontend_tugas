@@ -1,61 +1,216 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📙 Aplikasi Jadwal Sidang
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi ini terdiri dari dua bagian utama:
 
-## About Laravel
+* *Backend* → [PBF (CodeIgniter 4)](https://github.com/Alledanaralle/PBF.git)
+* *Frontend* → [frontend\_tugas (Laravel 10 + TailwindCSS)](https://github.com/JosindoRadit/frontend_tugas.git)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧹 Alur Instalasi Lengkap
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Langkah-langkah instalasi dimulai dari backend (CI4) lalu frontend (Laravel 10).
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 💻 1. Setup Backend (CodeIgniter 4)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 📦 Clone Repositori Backend
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+bash
+git clone https://github.com/Alledanaralle/PBF.git
+cd PBF
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📁 Salin File .env
 
-### Premium Partners
+bash
+cp env .env
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
 
-## Contributing
+### ⚙ Konfigurasi File .env
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Edit file .env untuk menyesuaikan koneksi database lokal:
 
-## Code of Conduct
+env
+app.baseURL = 'http://localhost:8080/'
+database.default.hostname = localhost
+database.default.database = jadwal_sidang
+database.default.username = root
+database.default.password = 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+> Ganti konfigurasi database sesuai dengan setting lokal kamu.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 🛂 Import Database
 
-## License
+1. Buat database baru dengan nama jadwal_sidang
+2. Import file SQL jika tersedia di repo (biasanya database/jadwal_sidang.sql atau sejenisnya)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📦 Install Dependency CI4
+
+bash
+composer install
+
+
+### 🚀 Jalankan Backend Server
+
+bash
+php spark serve
+
+
+> Default backend dapat diakses di http://localhost:8080
+
+---
+
+## 🌐 2. Setup Frontend (Laravel 10 + TailwindCSS)
+
+### 📦 Clone Repositori Frontend
+
+bash
+git clone https://github.com/JosindoRadit/frontend_tugas.git
+cd frontend_tugas
+
+
+### 📁 Salin dan Konfigurasi .env
+
+bash
+cp .env.example .env
+php artisan key:generate
+
+
+Edit file .env untuk mengatur URL aplikasi dan API:
+
+env
+APP_URL=http://localhost:8000
+API_URL=http://localhost:8080
+
+
+> API_URL digunakan untuk melakukan request ke backend CI4
+
+### 📦 Install Dependency Laravel
+
+bash
+composer install
+
+
+### 📦 Install Tailwind CSS
+
+bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+
+### ⚙ Konfigurasi tailwind.config.js
+
+js
+module.exports = {
+  content: [
+    "./resources/**/*.blade.php",
+    "./resources/**/*.js",
+    "./resources/**/*.vue",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+
+### ✏ Tambahkan Direktif Tailwind di resources/css/app.css
+
+css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+### 🚀 Build Asset Tailwind
+
+bash
+npm install
+npm run dev
+
+
+> Untuk build versi production: npm run build
+
+### ▶ Jalankan Frontend Laravel
+
+bash
+php artisan serve
+
+
+Frontend Laravel akan berjalan di:
+
+
+http://localhost:8000
+
+
+---
+
+## 🔗 Konsumsi API dari Backend
+
+Gunakan fetch atau axios di frontend untuk mengakses endpoint backend CI4.
+
+### Contoh (JavaScript di Blade):
+
+html
+<script>
+fetch("http://localhost:8080/dosen")
+  .then(res => res.json())
+  .then(data => console.log(data));
+</script>
+
+
+### ⚠ Pastikan CORS Aktif di Backend CI4
+
+Tambahkan header ini di controller atau middleware CI4:
+
+php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+
+---
+
+## 📁 Struktur Folder
+
+### Backend (CodeIgniter 4)
+
+
+PBF/
+├── app/
+├── public/
+├── writable/
+└── .env
+
+
+### Frontend (Laravel 10)
+
+
+frontend_tugas/
+├── app/
+├── public/
+├── resources/
+│   ├── css/
+│   ├── js/
+│   └── views/
+├── routes/
+│   └── web.php
+├── .env
+└── tailwind.config.js
+
+
+---
+
+## 📌 Tips Tambahan
+
+* Simpan URL API di file config/api.php agar bisa diakses global
+* Gunakan .env untuk mengelola konfigurasi environment
+* Tambahkan fitur autentikasi jika diperlukan di sisi frontend/backend
+
+---
+
+## 📝 Lisensi
+
+Proyek ini open-source dan dapat digunakan untuk pembelajaran atau pengembangan lanjutan.
