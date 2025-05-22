@@ -1,4 +1,4 @@
-# 📙 Aplikasi Jadwal Sidang
+#  Aplikasi Cuti
 
 Aplikasi ini terdiri dari dua bagian utama:
 
